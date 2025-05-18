@@ -53,7 +53,7 @@ h1 {
 .key-dials {
   display: flex;
   gap: 75px; /* Space between dials */
-  margin-bottom: 10px; /* Space if toggle wraps */
+  margin-bottom: 0px; /* Space if toggle wraps */
 }
 
 .mode-toggle-container {

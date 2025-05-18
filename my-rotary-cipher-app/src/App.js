@@ -40,13 +40,6 @@ function App() {
         } else {
             setInputText(cipher.decode(outputText))
         }
-        // if (inputText) {
-        //     setOutputText(mode === 'encode' ? cipher.encode(inputText) : cipher.decode(inputText));
-        // } else if (outputText) {
-        //     setOutputText(mode === 'encode' ? cipher.encode(inputText) : cipher.decode(inputText));
-        // } else {
-        //     setOutputText('');
-        // }
     }, [inputText, outputText, mode, getCipherInstance]);
 
     useEffect(() => {
@@ -83,6 +76,7 @@ function App() {
                         onChange={setBlueKey} // Pass the setter directly
                     />
                 </div>
+
             </div>
 
             <div className="io-panel"> {/* Wrapper for input/output text areas */}
@@ -92,10 +86,8 @@ function App() {
                         id="inputText"
                         placeholder="DATA STREAM INPUT..." // Themed placeholder
                         value={inputText}
-                        onChange={(e) => {
-                            setMode("encode")
-                            setInputText(e.target.value)
-                        }}
+                        onFocus={(e) => setMode("encode")}
+                        onChange={(e) => setInputText(e.target.value)}
                     />
                 </div>
 
@@ -105,14 +97,18 @@ function App() {
                         id="outputText"
                         placeholder="TRANSMISSION OUTPUT..." // Themed placeholder
                         value={outputText}
-                        onChange={(e) => {
-                            setMode("decode")
-                            setOutputText(e.target.value)
-                        }}
+                        onFocus={(e) => setMode("decode")}
+                        onChange={(e) => setOutputText(e.target.value)}
                     />
                 </div>
             </div>
+            <div className="mode-toggle-container"> {/* Wrapper for the mode toggle */}
+                <span id="mode-label-text" className="mode-label">
+                      Mode: {mode === 'encode' ? 'Encoding' : 'Decoding'}
+                    </span>
+            </div>
         </div>
+
     );
 }
 
