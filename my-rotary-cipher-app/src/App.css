@@ -40,9 +40,8 @@ h1 {
 .controls-panel {
   display: flex;
   flex-wrap: wrap; /* Allow wrapping on smaller screens */
-  justify-content: space-between; /* Space out dials and toggle */
+  justify-content: center; /* Space out dials and toggle */
   align-items: center; /* Align items nicely */
-  vertical-align: auto;
   margin-bottom: 25px;
   padding: 15px 20px;
   background-color: rgba(0,0,0,0.25); /* Darker inset panel */
@@ -53,7 +52,7 @@ h1 {
 
 .key-dials {
   display: flex;
-  gap: 25px; /* Space between dials */
+  gap: 75px; /* Space between dials */
   margin-bottom: 10px; /* Space if toggle wraps */
 }
 
