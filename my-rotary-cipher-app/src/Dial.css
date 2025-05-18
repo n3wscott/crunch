@@ -1,0 +1,96 @@
+/* src/Dial.css */
+.dial-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    background-color: #4a5058; /* Dark grey, machine-like */
+    color: #e0e0e0; /* Light text */
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.6), 0 3px 5px rgba(0,0,0,0.4);
+    width: 160px; /* Adjust as needed */
+    border: 2px solid #2c3035; /* Darker border */
+}
+
+.dial-blue {
+    /* Accents for the blue dial */
+    border-top: 3px solid #3498db;
+    border-bottom: 3px solid #3498db;
+}
+
+.dial-red {
+    /* Accents for the red dial */
+    border-top: 3px solid #e74c3c;
+    border-bottom: 3px solid #e74c3c;
+}
+
+.dial-label {
+    font-size: 0.85em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+    color: #bdc3c7; /* Lighter grey for label */
+}
+
+.dial-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #33383d; /* Slightly darker inner part */
+    border-radius: 6px;
+    padding: 6px 8px;
+    width: 100%;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.dial-button {
+    background-color: #5a626b;
+    color: #f0f0f0;
+    border: 1px solid #2c3035;
+    font-size: 1.8em; /* Larger arrows */
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0px 12px; /* Adjust for arrow size */
+    border-radius: 4px;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    line-height: 1; /* Consistent button height */
+    box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+}
+
+.dial-button:hover {
+    background-color: #6b747e;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.dial-button:active {
+    background-color: #7c8691;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.4);
+}
+
+.dial-value-display {
+    font-size: 2.2em; /* Larger letter display */
+    font-weight: bold;
+    padding: 0 10px; /* Space around the letter */
+    min-width: 1.6em; /* Ensure space for the letter */
+    text-align: center;
+    color: #f1c40f; /* Gold-ish color for the letter */
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.8), 0 0 5px rgba(241, 196, 15, 0.3);
+    font-family: 'Segment7', 'Courier New', Courier, monospace; /* Digital-like font, Segment7 is an example */
+    /* You might need to import Segment7 or use a fallback */
+}
+
+.dial-letter {
+    display: inline-block;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    /* Future: Add transform for rotation/flip effect */
+}
+
+/* Example of a font for digital display (you'd need to host/import this)
+@font-face {
+  font-family: 'Segment7';
+  src: url('path/to/segment7-font.woff2') format('woff2'),
+       url('path/to/segment7-font.woff') format('woff');
+}
+*/

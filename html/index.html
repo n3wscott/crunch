@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotary Cipher</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        textarea { width: 100%; min-height: 100px; margin-bottom: 10px; box-sizing: border-box; }
+        label { display: block; margin-bottom: 5px; }
+        input[type="text"] { width: 50px; margin-bottom: 10px; }
+        button { padding: 8px 15px; margin-right: 10px; }
+        pre { background-color: #f4f4f4; padding: 10px; border: 1px solid #ddd; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+<h1>Rotary Cipher</h1>
+
+<div>
+    <label for="blueKey">Blue Key (a-z):</label>
+    <input type="text" id="blueKey" maxlength="1" value="a">
+</div>
+<div>
+    <label for="redKey">Red Key (a-z):</label>
+    <input type="text" id="redKey" maxlength="1" value="a">
+</div>
+
+<div>
+    <label for="inputText">Input Text:</label>
+    <textarea id="inputText" placeholder="Enter text to encode or decode"></textarea>
+</div>
+
+<button id="encodeButton">Encode</button>
+<button id="decodeButton">Decode</button>
+
+<div>
+    <label for="outputText">Output Text:</label>
+    <textarea id="outputText" readonly placeholder="Result will appear here"></textarea>
+</div>
+
+<h2>Key Details:</h2>
+<button id="showEncodeKey">Show Encode Key</button>
+<button id="showDecodeKey">Show Decode Key</button>
+<pre id="keyDetailsOutput"></pre>
+
+<script>
+    // --- Paste the RotaryCipher class code here ---
+    const CODE = "zvruwasqblojxtpgcfimkndyeh";
+
+    class RotaryCipher {
+        constructor(blueChar, redChar) {
+            // Ensure keys are single lowercase letters
+            this.blueChar = blueChar.toLowerCase();
+            this.redChar = redChar.toLowerCase();
+
+            if (this.blueChar.length !== 1 || this.blueChar < 'a' || this.blueChar > 'z' ||
+                this.redChar.length !== 1 || this.redChar < 'a' || this.redChar > 'z') {
+                throw new Error("Keys must be single lowercase letters (a-z).");
+            }
+
+            this.blue = this.blueChar.charCodeAt(0);
+            this.red = this.redChar.charCodeAt(0);
+            this.encodeMap = new Map();
+            this.decodeMap = new Map();
+
+            const aCharCode = 'a'.charCodeAt(0);
+            const zCharCode = 'z'.charCodeAt(0);
+
+            for (let i = 0; i < CODE.length; i++) {
+                let inCharCode = aCharCode + i + (this.blue - aCharCode);
+                if (inCharCode > zCharCode) {
+                    inCharCode -= 26;
+                }
+                const inChar = String.fromCharCode(inCharCode);
+
+                let outCharCode = CODE.charCodeAt(i) + (this.red - aCharCode);
+                if (outCharCode > zCharCode) {
+                    outCharCode -= 26;
+                }
+                const outChar = String.fromCharCode(outCharCode);
+
+                this.encodeMap.set(inChar, outChar);
+                this.decodeMap.set(outChar, inChar);
+            }
+        }
+
+        _process(input, map) {
+            const lowerInput = input.toLowerCase();
+            let output = "";
+            for (let i = 0; i < lowerInput.length; i++) {
+                const char = lowerInput[i];
+                if (map.has(char)) {
+                    output += map.get(char);
+                } else {
+                    // Match Go: non-alphabetic characters become spaces in output
+                    // if (char >= 'a' && char <= 'z') {
+                    //    output += ' ';
+                    // } else {
+                    //    output += char; // Or keep non-alpha chars like spaces, numbers, punctuation
+                    // }
+                    // To strictly match Go's behavior where non-mapped becomes space:
+                    output += ' ';
+                }
+            }
+            return output.toUpperCase();
+        }
+
+        encode(input) {
+            return this._process(input, this.encodeMap);
+        }
+
+        decode(input) {
+            return this._process(input, this.decodeMap);
+        }
+
+        getPrintableKey(method) {
+            let keyString = "";
+            const aCharCode = 'a'.charCodeAt(0);
+            if (method.toLowerCase() === "encode") {
+                keyString += `Encode\nRed (${this.redChar}) - Blue (${this.blueChar})\n`;
+                keyString += `${this.redChar.toUpperCase()} === ${this.blueChar.toUpperCase()}\n\n`;
+                keyString += "Plain  -> Cipher\n";
+                for (let i = 0; i < 26; i++) {
+                    const char = String.fromCharCode(aCharCode + i);
+                    keyString += `${char} --> ${this.encodeMap.get(char) || '?'}\n`;
+                }
+            } else if (method.toLowerCase() === "decode") {
+                keyString += `Decode\nBlue (${this.blueChar}) - Red (${this.redChar})\n`;
+                keyString += `${this.blueChar.toUpperCase()} === ${this.redChar.toUpperCase()}\n\n`;
+                keyString += "Cipher -> Plain\n";
+                // To display decode key nicely (Cipher -> Plain, alphabetically by Cipher)
+                // we can sort the keys of the decodeMap or iterate 'a' through 'z' for cipher chars
+                const sortedCipherChars = Array.from(this.decodeMap.keys()).sort();
+                for (const cipherChar of sortedCipherChars) {
+                    if (cipherChar >= 'a' && cipherChar <= 'z') { // Only show a-z mappings
+                        keyString += `${cipherChar} --> ${this.decodeMap.get(cipherChar) || '?'}\n`;
+                    }
+                }
+            }
+            return keyString;
+        }
+    }
+    // --- End of RotaryCipher class code ---
+
+    const blueKeyInput = document.getElementById('blueKey');
+    const redKeyInput = document.getElementById('redKey');
+    const inputTextarea = document.getElementById('inputText');
+    const outputTextarea = document.getElementById('outputText');
+    const encodeButton = document.getElementById('encodeButton');
+    const decodeButton = document.getElementById('decodeButton');
+    const showEncodeKeyButton = document.getElementById('showEncodeKey');
+    const showDecodeKeyButton = document.getElementById('showDecodeKey');
+    const keyDetailsOutput = document.getElementById('keyDetailsOutput');
+
+    let currentCipher = null;
+
+    function initializeCipher() {
+        const blueVal = blueKeyInput.value.trim();
+        const redVal = redKeyInput.value.trim();
+
+        if (blueVal.length !== 1 || redVal.length !== 1 ||
+            !/^[a-z]$/.test(blueVal.toLowerCase()) || !/^[a-z]$/.test(redVal.toLowerCase())) {
+            alert("Please enter single lowercase letters (a-z) for Blue and Red keys.");
+            outputTextarea.value = "Error: Invalid keys.";
+            keyDetailsOutput.textContent = "Error: Invalid keys.";
+            return false;
+        }
+        try {
+            currentCipher = new RotaryCipher(blueVal, redVal);
+            outputTextarea.value = ""; // Clear previous output/error
+            keyDetailsOutput.textContent = "Cipher initialized. Select an action.";
+            return true;
+        } catch (e) {
+            alert("Error initializing cipher: " + e.message);
+            outputTextarea.value = "Error: " + e.message;
+            keyDetailsOutput.textContent = "Error: " + e.message;
+            return false;
+        }
+    }
+
+    // Initialize on load with default values
+    initializeCipher();
+
+    blueKeyInput.addEventListener('input', initializeCipher);
+    redKeyInput.addEventListener('input', initializeCipher);
+
+    encodeButton.addEventListener('click', () => {
+        if (!currentCipher && !initializeCipher()) return; // Try to init if not already
+        if (currentCipher) {
+            outputTextarea.value = currentCipher.encode(inputTextarea.value);
+        }
+    });
+
+    decodeButton.addEventListener('click', () => {
+        if (!currentCipher && !initializeCipher()) return;
+        if (currentCipher) {
+            outputTextarea.value = currentCipher.decode(inputTextarea.value);
+        }
+    });
+
+    showEncodeKeyButton.addEventListener('click', () => {
+        if (!currentCipher && !initializeCipher()) return;
+        if (currentCipher) {
+            keyDetailsOutput.textContent = currentCipher.getPrintableKey("encode");
+        }
+    });
+
+    showDecodeKeyButton.addEventListener('click', () => {
+        if (!currentCipher && !initializeCipher()) return;
+        if (currentCipher) {
+            keyDetailsOutput.textContent = currentCipher.getPrintableKey("decode");
+        }
+    });
+
+</script>
+</body>
+</html>

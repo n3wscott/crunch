@@ -2,12 +2,14 @@ package cipher
 
 import (
 	"fmt"
+	"io"
 	"strings"
 )
 
 const Code = "zvruwasqblojxtpgcfimkndyeh"
 
 type Rotary interface {
+	PrintKey(string, io.Writer)
 	Encode(string) string
 	Decode(string) string
 }
@@ -16,7 +18,7 @@ func New(blue, red string) Rotary {
 	red = strings.ToLower(red)
 	blue = strings.ToLower(blue)
 
-	fmt.Println(red, "---", blue)
+	//fmt.Println(red, "---", blue)
 
 	encode := map[rune]rune{}
 	decode := map[rune]rune{}
@@ -41,14 +43,34 @@ func New(blue, red string) Rotary {
 	}
 
 	return &rotary{
+		red:    rune(red[0]),
+		blue:   rune(blue[0]),
 		encode: encode,
 		decode: decode,
 	}
 }
 
 type rotary struct {
-	encode map[rune]rune
-	decode map[rune]rune
+	red, blue rune
+	encode    map[rune]rune
+	decode    map[rune]rune
+}
+
+func (r *rotary) PrintKey(method string, out io.Writer) {
+	switch strings.ToLower(method) {
+	case "encode":
+		out.Write([]byte(fmt.Sprintf("Encode\nRed - Blue\n")))
+		out.Write([]byte(fmt.Sprintf("%c === %c\n", r.red, r.blue)))
+		for in := 'a'; in <= 'z'; in++ {
+			out.Write([]byte(fmt.Sprintf("%c --> %c\n", in, r.encode[in])))
+		}
+	case "decode":
+		out.Write([]byte(fmt.Sprintf("Decode\nBlue - Red\n")))
+		out.Write([]byte(fmt.Sprintf("%c === %c\n", r.blue, r.red)))
+		for in := 'a'; in <= 'z'; in++ {
+			out.Write([]byte(fmt.Sprintf("%c --> %c\n", in, r.decode[in])))
+		}
+	}
 }
 
 func (r *rotary) Decode(input string) string {

@@ -1,0 +1,211 @@
+/* src/App.css - Updates for machine theme */
+/* Optional: Import a mechanical or retro font */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap');
+
+body {
+  /* font-family: 'Orbitron', sans-serif; */ /* For titles and headings */
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace; /* For body text and inputs */
+  margin: 0;
+  padding: 20px;
+  background-color: #1e2227; /* Very dark page background */
+  color: #c0c5ce; /* Light grey text */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align to top for longer content */
+  min-height: 100vh;
+}
+
+.container.machine-bg {
+  background: linear-gradient(145deg, #3a3f44, #2c3035); /* Dark metallic gradient */
+  padding: 20px 25px;
+  border-radius: 15px; /* More rounded for a machine casing */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0,0,0,0.4), 0 0 0 5px #1a1d20; /* Complex shadow for depth */
+  width: 100%;
+  max-width: 750px; /* Allow more space for controls */
+  border: 2px solid #4a5058; /* Outer border */
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  color: #e74c3c; /* Red accent color for title, like a warning light */
+  margin-top: 5px;
+  margin-bottom: 25px;
+  text-shadow: 0 0 5px #e74c3c, 0 0 10px #e74c3c, 2px 2px 3px rgba(0,0,0,0.8);
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-size: 2em;
+}
+
+.controls-panel {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  justify-content: space-between; /* Space out dials and toggle */
+  align-items: center; /* Align items nicely */
+  margin-bottom: 25px;
+  padding: 15px 20px;
+  background-color: rgba(0,0,0,0.25); /* Darker inset panel */
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+  border: 1px solid #1a1d20;
+}
+
+.key-dials {
+  display: flex;
+  gap: 25px; /* Space between dials */
+  margin-bottom: 10px; /* Space if toggle wraps */
+}
+
+.mode-toggle-container {
+  display: flex;
+  align-items: center;
+  margin-top: 5px; /* Align with dials if they are taller */
+}
+
+/* Mode Toggle styling */
+.mode-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  padding: 8px 12px;
+  background-color: #4a5058; /* Match dial container bg */
+  border-radius: 8px;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.5), 0 2px 3px rgba(0,0,0,0.3);
+  border: 1px solid #2c3035;
+}
+
+.mode-toggle label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500;
+  color: #e0e0e0;
+  text-transform: none;
+  font-size: 0.9em;
+}
+
+.toggle-slider {
+  position: relative;
+  display: inline-block;
+  width: 44px; /* Slightly smaller */
+  height: 22px;
+  background-color: #33383d; /* Darker inactive */
+  border-radius: 34px;
+  transition: background-color 0.3s;
+  margin-right: 10px;
+  border: 1px solid #222;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px; /* Smaller knob */
+  width: 16px;
+  left: 3px;
+  bottom: 2px; /* Adjusted for new size */
+  background-color: #7f8c8d; /* Grey knob */
+  border-radius: 50%;
+  transition: transform 0.3s, background-color 0.3s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.mode-toggle input[type="checkbox"]:checked + .toggle-slider {
+  background-color: #e74c3c; /* Red active color for toggle */
+}
+.mode-toggle input[type="checkbox"]:checked + .toggle-slider:before {
+  transform: translateX(22px); /* Adjusted for new size */
+  background-color: #f0f0f0; /* Lighter knob when active */
+}
+
+.mode-label {
+  font-size: 0.95em;
+  color: #e0e0e0;
+}
+
+/* IO Panel Styling */
+.io-panel {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.io-panel .text-io {
+  flex: 1;
+}
+
+.text-io label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #7f8c8d; /* Muted label color */
+  text-transform: uppercase;
+  font-size: 0.8em;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 1px #111;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #2c3035;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+  background-color: #1a1d20; /* Dark background for textarea */
+  color: #adebad; /* Greenish text, like an old terminal */
+  min-height: 140px;
+  resize: vertical;
+  box-shadow: inset 0 3px 8px rgba(0,0,0,0.6);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+textarea:focus {
+  border-color: #e74c3c; /* Red focus, matching title */
+  box-shadow: inset 0 3px 8px rgba(0,0,0,0.6), 0 0 0 2px rgba(231, 76, 60, 0.4);
+  outline: none;
+}
+
+/* Diagnostic Panel (Key Details) */
+.diagnostic-panel h2 {
+  font-family: 'Orbitron', sans-serif;
+  color: #7f8c8d;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1em;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #4a5058;
+  padding-bottom: 8px;
+}
+
+pre#keyDetailsOutput {
+  background-color: rgba(0,0,0,0.3);
+  padding: 15px;
+  border: 1px solid #2c3035;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  max-height: 180px;
+  overflow-y: auto;
+  color: #7f8c8d; /* Muted grey for diagnostic text */
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
+}
+
+.error-message {
+  color: #ffffff;
+  background-color: rgba(231, 76, 60, 0.7); /* Stronger red bg for error */
+  padding: 10px 15px;
+  border: 1px solid #c0392b;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+}
