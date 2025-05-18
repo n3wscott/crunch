@@ -35,12 +35,19 @@ function App() {
             setOutputText('');
             return;
         }
-        if (inputText) {
-            setOutputText(mode === 'encode' ? cipher.encode(inputText) : cipher.decode(inputText));
+        if (mode === 'encode') {
+            setOutputText(cipher.encode(inputText));
         } else {
-            setOutputText('');
+            setInputText(cipher.decode(outputText))
         }
-    }, [inputText, mode, getCipherInstance]);
+        // if (inputText) {
+        //     setOutputText(mode === 'encode' ? cipher.encode(inputText) : cipher.decode(inputText));
+        // } else if (outputText) {
+        //     setOutputText(mode === 'encode' ? cipher.encode(inputText) : cipher.decode(inputText));
+        // } else {
+        //     setOutputText('');
+        // }
+    }, [inputText, outputText, mode, getCipherInstance]);
 
     useEffect(() => {
         const cipher = getCipherInstance();
@@ -64,64 +71,44 @@ function App() {
             <div className="controls-panel"> {/* New wrapper for top controls */}
                 <div className="key-dials"> {/* Wrapper for the dials */}
                     <Dial
-                        label="Blue Key"
-                        color="blue"
-                        value={blueKey}
-                        onChange={setBlueKey} // Pass the setter directly
-                    />
-                    <Dial
                         label="Red Key"
                         color="red"
                         value={redKey}
                         onChange={setRedKey} // Pass the setter directly
                     />
-                </div>
-
-                <div className="mode-toggle-container"> {/* Wrapper for the mode toggle */}
-                    <div
-                        className="mode-toggle"
-                        onClick={toggleMode}
-                        role="switch"
-                        aria-checked={mode === 'decode'}
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                            if (e.key === ' ' || e.key === 'Enter') toggleMode()
-                        }}
-                    >
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={mode === 'decode'}
-                                onChange={toggleMode}
-                                aria-labelledby="mode-label-text"
-                            />
-                            <span className="toggle-slider"></span>
-                            <span id="mode-label-text" className="mode-label">
-                  Mode: {mode === 'encode' ? 'Encoding' : 'Decoding'}
-                </span>
-                        </label>
-                    </div>
+                    <Dial
+                        label="Blue Key"
+                        color="blue"
+                        value={blueKey}
+                        onChange={setBlueKey} // Pass the setter directly
+                    />
                 </div>
             </div>
 
             <div className="io-panel"> {/* Wrapper for input/output text areas */}
                 <div className="text-io input-section">
-                    <label htmlFor="inputText">Input Array</label> {/* Changed label */}
+                    <label htmlFor="inputText">Message</label> {/* Changed label */}
                     <textarea
                         id="inputText"
                         placeholder="DATA STREAM INPUT..." // Themed placeholder
                         value={inputText}
-                        onChange={(e) => setInputText(e.target.value)}
+                        onChange={(e) => {
+                            setMode("encode")
+                            setInputText(e.target.value)
+                        }}
                     />
                 </div>
 
                 <div className="text-io output-section">
-                    <label htmlFor="outputText">Output Array</label> {/* Changed label */}
+                    <label htmlFor="outputText">Encoded Message</label> {/* Changed label */}
                     <textarea
                         id="outputText"
-                        readOnly
                         placeholder="TRANSMISSION OUTPUT..." // Themed placeholder
                         value={outputText}
+                        onChange={(e) => {
+                            setMode("decode")
+                            setOutputText(e.target.value)
+                        }}
                     />
                 </div>
             </div>

@@ -32,7 +32,6 @@ h1 {
   color: #e74c3c; /* Red accent color for title, like a warning light */
   margin-top: 5px;
   margin-bottom: 25px;
-  text-shadow: 0 0 5px #e74c3c, 0 0 10px #e74c3c, 2px 2px 3px rgba(0,0,0,0.8);
   font-weight: 700;
   letter-spacing: 2px;
   font-size: 2em;
@@ -43,6 +42,7 @@ h1 {
   flex-wrap: wrap; /* Allow wrapping on smaller screens */
   justify-content: space-between; /* Space out dials and toggle */
   align-items: center; /* Align items nicely */
+  vertical-align: auto;
   margin-bottom: 25px;
   padding: 15px 20px;
   background-color: rgba(0,0,0,0.25); /* Darker inset panel */
